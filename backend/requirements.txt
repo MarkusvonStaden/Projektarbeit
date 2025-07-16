@@ -1,0 +1,7 @@
+fastapi==0.111.0 # Oder die spezifische Version, die du verwenden möchtest
+uvicorn[standard]==0.30.1 # Oder die spezifische Version
+qdrant-client==1.14.2 # Wenn du den offiziellen Python-Client für Qdrant verwendest
+requests
+ollama
+pymongo
+fastembed
