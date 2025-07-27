@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
-from handlers import post_question_handler, get_questions_handler, get_question_handler, post_answer_handler, omit_answer_handler
+from handlers import post_question_handler, get_questions_handler, get_question_handler, post_answer_handler, omit_answer_handler, mark_answer_correct_handler
 app = FastAPI()
 
 app.add_middleware(
@@ -34,5 +34,9 @@ def add_answer(question_id: str, answer: str = Body(...)):
 @app.post("/questions/{question_id}/omit")
 def omit_answer(question_id: str):
     return omit_answer_handler(question_id=question_id)
+
+@app.post("/questions/{question_id}/correct")
+def mark_correct(question_id: str):
+    return mark_answer_correct_handler(question_id=question_id)
 
 # TODO: Add isClosed Payload

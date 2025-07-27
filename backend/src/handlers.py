@@ -1,7 +1,7 @@
 # from db import insert_question, get_question, insert_answer
 import stores_dense
 import llm
-from stores_dense import get_all_questions, get_question_by_id, insert_question, insert_answer, omit_answer
+from stores_dense import get_all_questions, get_question_by_id, insert_question, insert_answer, omit_answer, mark_answer_correct
 
 def post_question_handler(*args, **kwargs):
     question = kwargs.get('question', '')
@@ -37,6 +37,10 @@ def post_answer_handler(*args, **kwargs):
     question_id = kwargs.get('question', '')
     answer = kwargs.get('answer', '')
     return insert_answer(question_id, answer)
+
+def mark_answer_correct_handler(*args, **kwargs):
+    question_id = kwargs.get('question_id', '')
+    return mark_answer_correct(question_id)
 
 # def post_answer_handler(*args, **kwargs):
 #     question_id = kwargs.get('question', '')

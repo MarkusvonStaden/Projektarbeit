@@ -94,6 +94,7 @@ def get_all_questions():
             "id": point.id,
             "question": point.payload.get("question"),
             "answer": point.payload.get("answer"),
+            "isCorrect": point.payload.get("isCorrect", False),
         }
         for point in results.points
     ]
@@ -123,6 +124,7 @@ def insert_question(question: str) -> str:
                     "question": question,
                     "answer": None,
                     "omittedAnswers": [],
+                    "isCorrect": False,
                 },
             )
         ],
@@ -139,6 +141,7 @@ def insert_answer(question_id: str, answer: str):
         points=[question_id],
         payload={
             "answer": answer,
+            "isCorrect": False,
         },
     )
     if result.status == "completed":
@@ -165,6 +168,7 @@ def omit_answer(question_id: str):
     payload_update = {
         "answer": updated_answer,
         "omittedAnswers": omitted_answers,
+        "isCorrect": False,
     }
 
     result = client.set_payload(
@@ -178,3 +182,17 @@ def omit_answer(question_id: str):
             collection_name="q_and_a", points=[question_id], vectors=["answers"]
         )
     return get_question_by_id(question_id)
+
+
+def mark_answer_correct(question_id: str):
+    payload_update = {
+        "isCorrect": True,
+    }
+
+    result = client.set_payload(
+        "q_and_a",
+        points=[question_id],
+        payload=payload_update,
+    )
+
+    return get_question_by_id(question_id) if result.status == "completed" else None

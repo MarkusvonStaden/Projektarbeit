@@ -11,22 +11,38 @@ export function UserMessage({ text }) {
   );
 }
 
-export function AssistantMessage({ text, omit }) {
+export function AssistantMessage({ text, omit, markCorrect, isCorrect }) {
   return (
     <div className="bg-gray-100 border border-gray-300 rounded-md p-4 mb-2 flex flex-col">
       <div>
         <Text className="text-gray-700">
           <Strong>Assistent:</Strong> {text}
         </Text>
+        {isCorrect && (
+          <div className="mt-2 flex items-center text-green-600">
+            <ThumbsUp className="h-4 w-4 mr-1" />
+            <span className="text-sm font-medium">Als korrekt markiert</span>
+          </div>
+        )}
       </div>
       <div className="mt-2 flex items-center space-x-2">
-        <button className="text-gray-500 hover:text-green-500">
+        <button 
+          className={`${isCorrect ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+          onClick={async () => {
+            if (markCorrect) {
+              await markCorrect();
+            }
+          }}
+          disabled={isCorrect}
+        >
           <ThumbsUp className="h-5 w-5" />
         </button>
         <button
           className="text-gray-500 hover:text-red-500"
           onClick={async () => {
-            await omit();
+            if (omit) {
+              await omit();
+            }
           }}
         >
           <ThumbsDown className="h-5 w-5" />

@@ -2,7 +2,7 @@ import os
 from ollama import Client
 from pydantic import BaseModel
 
-MODEL = os.getenv("LLM_MODEL", "gemma3:12b")
+MODEL = os.getenv("LLM_MODEL", "gemma3:1b")
 HOST = os.getenv("OLLAMA_HOST", "localhost")
 
 ollama = Client(host=f"http://{HOST}:11434")
