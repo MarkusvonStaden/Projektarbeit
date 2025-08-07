@@ -9,7 +9,7 @@ import {
 } from '@/components/message';
 
 
-const API_BASE_URL = 'http://localhost';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 async function fetchQuestion(id) {
   try {

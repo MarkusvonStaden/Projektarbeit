@@ -31,7 +31,8 @@ function Example() {
   // Verwende useCallback, um zu verhindern, dass fetchQuestions bei jedem Render neu erstellt wird
   const fetchQuestions = useCallback(async () => {
     try {
-      const userResponse = await fetch("http://localhost/questions");
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+      const userResponse = await fetch(`${backendUrl}/questions`);
       const data = await userResponse.json();
       const withoutAnswer = data.filter((item) => !item.answer);
       console.log("Fetched questions:", data);

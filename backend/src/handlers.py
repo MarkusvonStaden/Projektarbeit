@@ -8,7 +8,6 @@ def post_question_handler(*args, **kwargs):
     question_id = insert_question(question)
 
     results = stores_dense.search(question)
-    print(f"Search results for question '{question}': {results}")
 
     if results:
         answer = llm.response_answers_question(question, results)

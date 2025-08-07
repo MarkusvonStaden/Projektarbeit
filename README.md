@@ -115,7 +115,6 @@ Das System besteht aus drei Hauptkomponenten:
 - **Qdrant**: Vector Database für Similarity Search
 - **Ollama**: Lokale LLM-Integration (Standard: Gemma 3:1b)
 - **FastEmbed**: Text-Embeddings mit "mixedbread-ai/mxbai-embed-large-v1"
-- **MongoDB**: Dokumentendatenbank für Metadaten
 
 ### Frontend-Technologien
 - **React 19**: Moderne Frontend-Bibliothek

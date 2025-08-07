@@ -36,6 +36,9 @@ def search(query: str):
             models.IsEmptyCondition(
                 is_empty=models.PayloadField(key="answer"),
             )
+        ],
+        must=[
+            models.FieldCondition(key="isCorrect", match=models.MatchValue(value=True)),
         ]
     )
 
@@ -61,27 +64,6 @@ def search(query: str):
     return [(point.payload.get("question"), point.payload.get("answer")) for point in results.points]
 
 
-def add_question_answer(question: str, answer: str):
-    id = str(uuid4())
-    question_vector = next(dense_embedding_model.embed(question)).tolist()
-    answer_vector = next(dense_embedding_model.embed(answer)).tolist()
-
-    client.upload_points(
-        "q_and_a",
-        points=[
-            models.PointStruct(
-                id=id,
-                vector={
-                    "questions": question_vector,
-                    "answers": answer_vector,
-                },
-                payload={"question": question, "answer": answer},
-            )
-        ],
-    )
-
-
-#########################################
 def get_all_questions():
     results = client.query_points(
         collection_name="q_and_a",
