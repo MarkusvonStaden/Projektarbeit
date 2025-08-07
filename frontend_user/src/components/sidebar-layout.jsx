@@ -2,7 +2,18 @@
 
 import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
-import { NavbarItem } from './navbar'
+
+// Simple NavbarItem replacement for mobile navigation
+function NavbarItem({ children, className, ...props }) {
+  return (
+    <button
+      {...props}
+      className={`relative flex min-w-0 items-center gap-3 rounded-lg p-2 text-left text-base/6 font-medium text-zinc-950 hover:bg-zinc-950/5 dark:text-white dark:hover:bg-white/5 ${className || ''}`}
+    >
+      {children}
+    </button>
+  )
+}
 
 function OpenMenuIcon() {
   return (
