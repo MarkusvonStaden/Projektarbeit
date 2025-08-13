@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react"; // Füge useCallback hinzu
+import { useEffect, useState, useCallback } from "react";
 import {
   Sidebar,
   SidebarBody,
@@ -27,7 +27,6 @@ function Example() {
   const [adminQuestions, setAdminQuestions] = useState([]);
   const [activeItemId, setActiveItemId] = useState(null);
 
-  // Verwende useCallback, um zu verhindern, dass fetchQuestions bei jedem Render neu erstellt wird
   const fetchQuestions = useCallback(async () => {
     try {
       const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
@@ -41,11 +40,11 @@ function Example() {
     } catch (error) {
       console.error("Failed to fetch questions:", error);
     }
-  }, []); // Leeres Abhängigkeits-Array, da keine externen Abhängigkeiten
+  }, []);
 
   useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions]); // fetchQuestions als Abhängigkeit, da es eine Callback-Funktion ist
+  }, [fetchQuestions]);
 
   const handleItemClick = (id) => {
     setActiveItemId(id);

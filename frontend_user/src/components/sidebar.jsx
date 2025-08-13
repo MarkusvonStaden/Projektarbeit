@@ -5,8 +5,7 @@ import clsx from 'clsx'
 import { LayoutGroup, motion } from 'framer-motion'
 import React, { forwardRef, useId } from 'react'
 import { TouchTarget } from './button'
-// import { Link } from './link'
-import { Link } from 'react-router-dom' // Adjusted import for React Router
+import { Link } from 'react-router-dom'
 
 export function Sidebar({ className, ...props }) {
   return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />

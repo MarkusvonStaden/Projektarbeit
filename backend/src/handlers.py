@@ -1,4 +1,3 @@
-# from db import insert_question, get_question, insert_answer
 import stores_dense
 import llm
 from stores_dense import get_all_questions, get_question_by_id, insert_question, insert_answer, omit_answer, mark_answer_correct
