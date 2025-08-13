@@ -40,10 +40,3 @@ def post_answer_handler(*args, **kwargs):
 def mark_answer_correct_handler(*args, **kwargs):
     question_id = kwargs.get('question_id', '')
     return mark_answer_correct(question_id)
-
-# def post_answer_handler(*args, **kwargs):
-#     question_id = kwargs.get('question', '')
-#     answer = kwargs.get('answer', '')
-#     question = get_question(question_id).get('question', '') if question_id else ''
-#     stores_dense.add_question_answer(question, answer)
-#     return insert_answer(question_id, answer) if question_id and answer else False

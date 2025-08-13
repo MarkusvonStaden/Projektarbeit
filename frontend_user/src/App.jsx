@@ -8,7 +8,6 @@ import {
   SidebarLabel,
 } from "@/components/sidebar";
 import { SidebarLayout } from "@/components/sidebar-layout";
-import { ChatWindow } from "@/components/chat-window";
 import { SidebarHeader } from "./components/sidebar";
 import {
 

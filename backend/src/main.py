@@ -38,5 +38,3 @@ def omit_answer(question_id: str):
 @app.post("/questions/{question_id}/correct")
 def mark_correct(question_id: str):
     return mark_answer_correct_handler(question_id=question_id)
-
-# TODO: Add isClosed Payload
