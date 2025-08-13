@@ -3,7 +3,6 @@
 import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
 
-// Simple NavbarItem replacement for mobile navigation
 function NavbarItem({ children, className, ...props }) {
   return (
     <button
