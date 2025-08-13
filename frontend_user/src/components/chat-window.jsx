@@ -19,7 +19,8 @@ export function ChatWindow() {
       setMessages([...messages, userMessage]);
       setInputText("");
 
-      const response = await fetch("http://localhost/question", {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+      const response = await fetch(`${backendUrl}/question`, {
         method: "POST",
         body: inputText,
       });

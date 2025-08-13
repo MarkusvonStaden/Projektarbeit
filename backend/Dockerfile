@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src /app/src
 
 # Setze den PYTHONPATH, damit Python die Module in 'src' finden kann
-ENV PYTHONPATH=/app/src
+WORKDIR /app/src
 
 # Exponiere den Port, auf dem FastAPI standardmäßig läuft (oder den, den du konfigurierst)
 EXPOSE 8000
@@ -24,4 +24,4 @@ EXPOSE 8000
 # Befehl zum Starten der FastAPI-Anwendung mit Uvicorn
 # Hier gehen wir davon aus, dass deine Haupt-FastAPI-App in 'src/main.py' liegt
 # und die Anwendung als 'app' im Modul 'main' heißt.
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

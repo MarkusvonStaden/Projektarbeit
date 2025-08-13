@@ -2,11 +2,27 @@
 
 import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
-import { NavbarItem } from './navbar'
+
+// Simple NavbarItem replacement for mobile navigation
+function NavbarItem({ children, className, ...props }) {
+  return (
+    <button
+      {...props}
+      className={`relative flex min-w-0 items-center gap-3 rounded-lg p-2 text-left text-base/6 font-medium text-zinc-950 hover:bg-zinc-950/5 active:bg-zinc-950/10 focus:outline-none dark:text-white dark:hover:bg-white/5 dark:active:bg-white/10 ${className || ''}`}
+    >
+      {children}
+    </button>
+  )
+}
 
 function OpenMenuIcon() {
   return (
-    <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true">
+    <svg 
+      data-slot="icon" 
+      viewBox="0 0 20 20" 
+      aria-hidden="true"
+      className="h-5 w-5 fill-current"
+    >
       <path d="M2 6.75C2 6.33579 2.33579 6 2.75 6H17.25C17.6642 6 18 6.33579 18 6.75C18 7.16421 17.6642 7.5 17.25 7.5H2.75C2.33579 7.5 2 7.16421 2 6.75ZM2 13.25C2 12.8358 2.33579 12.5 2.75 12.5H17.25C17.6642 12.5 18 12.8358 18 13.25C18 13.6642 17.6642 14 17.25 14H2.75C2.33579 14 2 13.6642 2 13.25Z" />
     </svg>
   )
@@ -58,18 +74,18 @@ export function SidebarLayout({ navbar, sidebar, children }) {
       </MobileSidebar>
 
       {/* Navbar on mobile */}
-      <header className="flex items-center px-4 lg:hidden">
+      <header className="sticky top-0 z-40 flex items-center px-4 py-4 bg-white border-b border-zinc-950/10 lg:hidden dark:bg-zinc-900 dark:border-white/10">
         <div className="py-2.5">
           <NavbarItem onClick={() => setShowSidebar(true)} aria-label="Open navigation">
             <OpenMenuIcon />
           </NavbarItem>
         </div>
-        <div className="min-w-0 flex-1">{navbar}</div>
+        {navbar && <div className="min-w-0 flex-1">{navbar}</div>}
       </header>
 
       {/* Content */}
-      <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64 lg:rounded-lg h-full">
-        <div className="lg:rounded-lg lg:bg-white lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10 h-full">
+      <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64 lg:rounded-lg h-full overflow-hidden">
+        <div className="lg:rounded-lg lg:bg-white lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10 h-full flex-1 overflow-auto">
           <div className="mx-auto lg:rounded-lg w-full h-full">{children}</div>
         </div>
       </main>

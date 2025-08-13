@@ -1,85 +1,50 @@
 services:
   qdrant:
-    image: qdrant/qdrant:latest # Nutzt das neueste offizielle Qdrant-Image
+    image: qdrant/qdrant:latest
     ports:
-      - "6333:6333" # Qdrant gRPC API (Standard)
-      - "6334:6334" # Qdrant HTTP API (Standard)
+      - "6333:6333"  # Qdrant gRPC API
+      - "6334:6334"  # Qdrant HTTP API
     volumes:
-      - qdrant_data:/qdrant/storage # Persistenter Speicher für Qdrant-Daten
-    restart: always 
-  
+      - qdrant_data:/qdrant/storage
+    restart: always
+
   backend:
-    build: # Baut das Image aus einem Dockerfile
+    build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000" # Beispiel: Dein Backend läuft auf Port 8000
+      - "8000:8000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./backend:/app # Mountet den lokalen Backend-Code in den Container zur Entwicklung
+      - ./backend:/app
     environment:
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
       - OLLAMA_HOST=host.docker.internal
-      - MONGO_HOST=mongodb
-      - MONGO_PORT=27017
-    depends_on: # Startet das Backend, sobald qdrant gestartet ist
+      - LLM_MODEL=deepseek-r1:32b
+    depends_on:
       - qdrant
-      - mongodb
-    restart: on-failure # Startet den Container nur bei Fehlern neu
+    restart: on-failure
 
-  
-  mongodb:
-    image: mongodb/mongodb-community-server
-    container_name: mongodb
-    ports:
-      - "27017:27017" # MongoDB Standardport
-    volumes:
-      - ./mongodb_data:/data/db # Persistenter Speicher für MongoDB-Daten
-    restart: always # Startet den Container immer neu, wenn er stoppt
-
-  # Node/React Frontend
   frontend:
-    build: # Baut das Image aus einem Dockerfile
-      context: ./frontend_user # Angenommen, dein Frontend-Code ist im './frontend'-Ordner
-      dockerfile: Dockerfile # Der Name deines Dockerfile im './frontend'-Ordner
+    build:
+      context: ./frontend_user
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Beispiel: Dein React-Dev-Server läuft auf Port 3000
+      - "3000:3000"
     volumes:
-      - ./frontend_user:/app # Mountet den lokalen Frontend-Code in den Container zur Entwicklung
-      - /app/node_modules # Verhindert, dass node_modules vom Host gemountet wird, um Probleme zu vermeiden
+      - ./frontend_user:/app
+      - frontend_node_modules:/app/node_modules
     environment:
-      # Hier können Umgebungsvariablen für dein Frontend definiert werden
-      - REACT_APP_BACKEND_URL=http://localhost:8000 # Für lokale Entwicklung vom Browser aus
-      # Wenn das Frontend später im Docker-Netzwerk direkt mit dem Backend kommunizieren soll:
-      # - REACT_APP_BACKEND_URL=http://backend:8000
-    depends_on: # Stellt sicher, dass das Backend gestartet ist, bevor das Frontend startet
+      - VITE_BACKEND_URL=http://localhost:8000
+    depends_on:
       - backend
     restart: on-failure
 
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - ./ollama_data:/root/.ollama
-  #   restart: unless-stopped
-  #   pull_policy: always
-  #   tty: true
-  #   entrypoint: >
-  #     /bin/sh -c "
-  #     /bin/ollama serve &
-  #     sleep 5 &&
-  #     /bin/ollama pull mxbai-embed-large &&
-  #     /bin/ollama pull gemma3:27b &&
-  #     wait
-  #     "
-
 volumes:
-  qdrant_data: # Definiert das persistente Volume für Qdrant
+  qdrant_data:
+  frontend_node_modules:
 
 networks:
-  default: # Alle Container in dieser Compose-Datei sind im selben Standardnetzwerk
-    # Dies ermöglicht die Kommunikation zwischen den Containern über ihre Servicenamen (z.B. 'backend' kann 'qdrant' erreichen)
+  default:

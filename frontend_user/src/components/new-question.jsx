@@ -12,7 +12,8 @@ export function NewQuestion( { updateSidebar }) {
     if (!inputValue.trim()) return;
     setInputValue("");
 
-    const response = await fetch("http://localhost/questions", {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+    const response = await fetch(`${backendUrl}/questions`, {
       method: "POST",
       body: inputValue,
     });

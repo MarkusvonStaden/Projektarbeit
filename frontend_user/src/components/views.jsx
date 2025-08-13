@@ -9,7 +9,7 @@ import {
 } from '@/components/message';
 
 
-const API_BASE_URL = 'http://localhost';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 
 async function fetchQuestion(id) {
   try {
@@ -33,6 +33,19 @@ async function postOmitAnswer(id) {
     return await response.json();
   } catch (err) {
     console.error("Failed to omit answer:", err);
+    return null;
+  }
+}
+
+async function postMarkCorrect(id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/questions/${id}/correct`, { method: 'POST' });
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (err) {
+    console.error("Failed to mark answer as correct:", err);
     return null;
   }
 }
@@ -99,6 +112,14 @@ export function UserView({ updateSidebar }) {
     updateSidebar();
   };
 
+  const handleMarkCorrect = async () => {
+    const updatedQuestion = await postMarkCorrect(id);
+    if (updatedQuestion) {
+      setQuestion(updatedQuestion);
+    }
+    updateSidebar();
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 p-6 lg:rounded-lg lg:bg-red lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
@@ -106,7 +127,12 @@ export function UserView({ updateSidebar }) {
           <QuestionDisplay question={question} />
           {question && (
             question.answer ? (
-              <AssistantMessage text={question.answer} omit={handleOmitAnswer} />
+              <AssistantMessage 
+                text={question.answer} 
+                omit={handleOmitAnswer} 
+                markCorrect={handleMarkCorrect} 
+                isCorrect={question.isCorrect}
+              />
             ) : (
               <InProgressMessage />
             )
