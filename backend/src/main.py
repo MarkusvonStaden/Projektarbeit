@@ -12,29 +12,29 @@ app.add_middleware(
 )
 
 @app.get("/questions")
-def get_questions():
+async def get_questions():
     return get_questions_handler()
 
 
 @app.post("/questions")
-def post_question(question: str = Body(...)):
+async def post_question(question: str = Body(...)):
     return post_question_handler(question=question)
 
 
 @app.get("/questions/{question_id}")
-def get_question(question_id: str):
+async def get_question(question_id: str):
     return get_question_handler(question_id=question_id)
 
 
 @app.post("/questions/{question_id}/answer")
-def add_answer(question_id: str, answer: str = Body(...)):
+async def add_answer(question_id: str, answer: str = Body(...)):
     return post_answer_handler(question=question_id, answer=answer)
 
 
 @app.post("/questions/{question_id}/omit")
-def omit_answer(question_id: str):
+async def omit_answer(question_id: str):
     return omit_answer_handler(question_id=question_id)
 
 @app.post("/questions/{question_id}/correct")
-def mark_correct(question_id: str):
+async def mark_correct(question_id: str):
     return mark_answer_correct_handler(question_id=question_id)

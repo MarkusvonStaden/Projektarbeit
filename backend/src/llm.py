@@ -50,7 +50,6 @@ IMPORTANT:
 - Do NOT include any formatting like newlines, bullet points, or lists in the JSON output
 - Do NOT add opening brackets or any text before the JSON"""
 
-    print(prompt)
     response = ollama.generate(
         model=model,
         format=Answer.model_json_schema(),
@@ -58,7 +57,6 @@ IMPORTANT:
         stream=False,
         think=True if model.startswith("deepseek") else False,
     )
-    print(response.response)
     answer = Answer.model_validate_json(response.response.replace("\n", "").replace("{{", "{").replace("{\"{", "{"))
     return answer.answer if answer.isAnswered else None
 
