@@ -57,6 +57,7 @@ IMPORTANT:
         stream=False,
         think=True if model.startswith("deepseek") else False,
     )
+
     answer = Answer.model_validate_json(response.response.replace("\n", "").replace("{{", "{").replace("{\"{", "{"))
     return answer.answer if answer.isAnswered else None
 
